@@ -230,7 +230,191 @@ int main() {
 
     return 0;
 }
-==============
+------------------------------------------------------------------------------------------
+5- Write the function that searches records by student name in the list.
+
+#include <stdio.h>
+#include <string.h>
+
+// Define a structure to represent a student record
+struct StudentRecord {
+    char name[50];
+    int rollNumber;
+    // Add other fields as needed
+};
+
+// Function to search for a student by name in a list of records
+int searchStudentByName(struct StudentRecord records[], int numRecords, const char* searchName) {
+    for (int i = 0; i < numRecords; i++) {
+        if (strcmp(records[i].name, searchName) == 0) {
+            return i; // Return the index of the found record
+        }
+    }
+    return -1; // Return -1 if the name is not found
+}
+
+int main() {
+    // Example usage of the searchStudentByName function
+    struct StudentRecord records[] = {
+        {"ali", 101},
+        {"osman", 102},
+        {"okay", 103},
+        // Add more records here
+    };
+    int numRecords = sizeof(records) / sizeof(records[0]);
+
+    const char* searchName = "osman";
+    int result = searchStudentByName(records, numRecords, searchName);
+
+    if (result != -1) {
+        printf("Student found at index %d\n", result);
+        printf("Name: %s, Roll Number: %d\n", records[result].name, records[result].rollNumber);
+    } else {
+        printf("Student not found.\n");
+    }
+
+    return 0;
+}
+------------------------------------------------------------------------------------------------------------------------
+6- Write the function that deletes the next node from the node with the searched student 
+name in the list. 
+
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+// Define a structure to represent a student record
+struct StudentRecord {
+    char name[50];
+    int rollNumber;
+    // Add other fields as needed
+};
+
+// Define the structure for a node in the linked list
+struct Node {
+    struct StudentRecord data;
+    struct Node* next;
+};
+
+// Function to delete the next node from the node with the specified student name
+void deleteNextNode(struct Node* head, const char* searchName) {
+    struct Node* current = head;
+    while (current != NULL && current->next != NULL) {
+        if (strcmp(current->data.name, searchName) == 0) {
+            // Found the node with the specified name
+            struct Node* temp = current->next;
+            current->next = temp->next;
+            free(temp); // Free the memory of the next node
+            return;
+        }
+        current = current->next;
+    }
+}
+
+// Function to print the linked list
+void printLinkedList(struct Node* head) {
+    struct Node* current = head;
+    while (current != NULL) {
+        printf("Name: %s, Roll Number: %d\n", current->data.name, current->data.rollNumber);
+        current = current->next;
+    }
+}
+
+int main() {
+    // Example usage of the deleteNextNode function
+    struct Node* head = NULL;
+    // Create a linked list with some student records
+
+    // Insert nodes (student records) into the linked list
+    struct Node* newNode1 = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode1->data.name, "Ali");
+    newNode1->data.rollNumber = 101;
+    newNode1->next = head;
+    head = newNode1;
+
+    struct Node* newNode2 = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode2->data.name, "osman");
+    newNode2->data.rollNumber = 102;
+    newNode2->next = head;
+    head = newNode2;
+
+    struct Node* newNode3 = (struct Node*)malloc(sizeof(struct Node));
+    strcpy(newNode3->data.name, "okay");
+    newNode3->data.rollNumber = 103;
+    newNode3->next = head;
+    head = newNode3;
+
+    // Print the original linked list
+    printf("Original Linked List:\n");
+    printLinkedList(head);
+
+    // Delete the next node after "Bob" in the list
+    deleteNextNode(head, "osman");
+
+    // Print the modified linked list
+    printf("\nLinked List after Deletion:\n");
+    printLinkedList(head);
+
+    // Free the memory for the linked list nodes
+    while (head != NULL) {
+        struct Node* temp = head;
+        head = head->next;
+        free(temp);
+    }
+
+    return 0;
+}
+------------------------------------------------------------------------------------
+7- Write the function that prints the record with the longest name in the list. 
+Output : the longest name in the list: Abdurrahmangazi 
+Length : 15
+
+#include <stdio.h>
+#include <string.h>
+
+// Define a structure to represent a student record
+struct StudentRecord {
+    char name[50];
+    int rollNumber;
+    // Add other fields as needed
+};
+
+// Function to find and print the record with the longest name in the list
+void printRecordWithLongestName(struct StudentRecord records[], int numRecords) {
+    int maxLength = 0;
+    int longestNameIndex = -1;
+
+    for (int i = 0; i < numRecords; i++) {
+        int nameLength = strlen(records[i].name);
+        if (nameLength > maxLength) {
+            maxLength = nameLength;
+            longestNameIndex = i;
+        }
+    }
+
+    if (longestNameIndex != -1) {
+        printf("The longest name in the list: %s\n", records[longestNameIndex].name);
+        printf("Length: %d\n", maxLength);
+    } else {
+        printf("The list is empty.\n");
+    }
+}
+
+int main() {
+    // Example usage of the printRecordWithLongestName function
+    struct StudentRecord records[] = {
+        {"okay", 101},
+        {"Ali", 102},
+        {"Abdurrahmangazi", 103},
+        {"osman", 104},
+        // Add more records here
+    };
+    int numRecords = sizeof(records) / sizeof(records[0]);
+
+    printRecordWithLongestName(records, numRecords);
+
+    return 0;
+}
 
 
 
